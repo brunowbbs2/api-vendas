@@ -1,0 +1,12 @@
+target/
+*.class
+*.log
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# config-repo tem seu proprio .git (repositorio separado, e' o que o
+# config-server consome). Nao versione ele dentro deste repositorio guarda-chuva;
+# trate-o como um repo independente (na vida real ficaria em outro projeto/GitHub).
+config-repo/
