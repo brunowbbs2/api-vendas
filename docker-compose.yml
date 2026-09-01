@@ -19,9 +19,14 @@ services:
       # monta a pasta config-repo (do seu Mac) dentro do container em /config-repo
       - ./config-repo:/config-repo
     environment:
-      # sobrescreve o git.uri do application.properties: em vez do caminho
-      # absoluto do Mac, aponta pro caminho DENTRO do container (o volume acima)
-      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=file:///config-repo
+      # backend "native" = le os .properties direto da pasta montada acima.
+      # O config-repo/ e uma pasta comum, sem .git, entao o backend git
+      # (spring.cloud.config.server.git.uri) nao funciona aqui: ele exige um
+      # repositorio Git de verdade e falha com "No .git at file:///config-repo".
+      # Sem configuracao, os servicos subiriam sem server.port, na porta 8080,
+      # e as portas publicadas abaixo apontariam para onde ninguem escuta.
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=file:///config-repo
     networks:
       - microservicos-net
 
