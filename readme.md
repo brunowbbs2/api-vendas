@@ -1,25 +1,8 @@
-Pod => É basicamente o container que ja conhecemos do docker.
+# Documentação Microserviços
+https://claude.ai/code/artifact/2c541174-0b49-486d-9ee2-1682e91b8daf
 
-produto-service-123A
-produto-service-123B
-produto-service-123C
+# Documentação implementação Docker GUIA
+https://claude.ai/code/artifact/a5f3c8e5-81de-4791-a16c-a71d4aa45f0f
 
-Deployment => Responsavel por gerenciar a reciclagem (troca) dos pods
-
-Servico => Nome para acessar o determinado serivico.
-
-<!-- Namespace => É uma pasta lógica dentro de algo. -->
-
-ConfigMap => Local onde guarda as informacoes para as coisas funcionarem.
-
-
-CLUSTER =>
-
-brew install kubectl kind
-
-kubectl => é o programa que comunica com o kubernets (ele q executa todos os comandos).
-
-
-kubectl <ação> <tipo de objeto> <nome, se precisar> [flags]
-
-kubectl get pods -n produtos -w
+# Documentação implementação Kubernetes GUIA
+https://claude.ai/code/artifact/68cd2944-af3d-430f-8e6f-ea27c4186982
