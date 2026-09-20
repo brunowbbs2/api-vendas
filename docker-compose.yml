@@ -1,13 +1,12 @@
 services:
-
   # --- Service Discovery ---
   eureka-server:
-    build: ./eureka-server        # usa o Dockerfile dessa pasta pra construir a imagem
+    build: ./eureka-server # usa o Dockerfile dessa pasta pra construir a imagem
     container_name: eureka-server # nome fixo do container (e nome que os outros usam na rede)
     ports:
-      - "8761:8761"                # porta_da_maquina:porta_do_container -> localhost:8761
+      - "8761:8761" # porta_da_maquina:porta_do_container -> localhost:8761
     networks:
-      - microservicos-net           # entra na rede compartilhada com os outros serviços
+      - microservicos-net # entra na rede compartilhada com os outros serviços
 
   # --- Configurações centralizadas (lê o config-repo) ---
   config-server:
@@ -34,8 +33,8 @@ services:
   produtos-service:
     build: ./produtos-service
     container_name: produtos-service
-    depends_on:                    # só cria este container depois dos dois abaixo
-      - eureka-server               # (não garante que já estejam "prontos", só criados)
+    depends_on: # só cria este container depois dos dois abaixo
+      - eureka-server # (não garante que já estejam "prontos", só criados)
       - config-server
     environment:
       # troca "localhost" por "config-server", o nome do serviço na rede Docker
@@ -67,7 +66,7 @@ services:
       - "8082:8082"
     networks:
       - microservicos-net
-  
+
   clientes-service:
     build: ./clientes-service
     container_name: clientes-service
@@ -82,6 +81,22 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     ports:
       - "8083:8083"
+    networks:
+      - microservicos-net
+
+  # --- Serviço de fornecedores ---
+  fornecedor-service:
+    build: ./fornecedor-service
+    container_name: fornecedor-service
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    ports:
+      - "8086:8086"
     networks:
       - microservicos-net
 
@@ -108,7 +123,7 @@ services:
     build: ./gateway
     container_name: gateway
     depends_on:
-      - eureka-server               # gateway só precisa do eureka pra descobrir os serviços
+      - eureka-server # gateway só precisa do eureka pra descobrir os serviços
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
     ports:
@@ -121,4 +136,4 @@ services:
 # em vez de precisar saber um IP.
 networks:
   microservicos-net:
-    driver: bridge   # tipo padrão de rede local isolada do Docker
+    driver: bridge # tipo padrão de rede local isolada do Docker

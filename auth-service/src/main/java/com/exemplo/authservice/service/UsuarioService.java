@@ -31,15 +31,21 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario autenticar(LoginRequest request){
+    public Usuario autenticar(LoginRequest request) {
         Usuario usuario = this.usuarioRepository.findByEmail(request.getEmail())
-            .orElseThrow(()-> new ResponseStatusException(HttpStatus.UNAUTHORIZED,"E-mail ou senha inválidos"));
-    
-            if(!passwordEncoder.matches(request.getSenha(),usuario.getSenha())){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"E-mail ou senha inválidos");
-            }
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
 
-            return usuario;
-    
+        if (!passwordEncoder.matches(request.getSenha(), usuario.getSenha())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos");
         }
+
+        return usuario;
+
+    }
+
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido"));
+    }
+
 }

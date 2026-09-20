@@ -24,5 +24,14 @@ public class JwtToken {
                 .subject(usuario.getEmail())
                 .signWith(secretKey).compact();
     }
+
+    public String validarToken(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
     
 }

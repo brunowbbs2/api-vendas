@@ -24,8 +24,9 @@ public class TokenFilter implements GlobalFilter, Ordered {
     // As unicas rotas que passam sem token. Sem elas ninguem consegue se
     // cadastrar nem pegar o primeiro token -- o sistema tranca por fora.
     private static final List<String> LIVRES = List.of(
-            "/auth-service/usuarios/login",
-            "/auth-service/usuarios");
+            "/auth-service/auth/login",
+            "/auth-service/auth/refresh",
+            "/auth-service/auth");
 
     private final SecretKey chave;
 
@@ -70,7 +71,8 @@ public class TokenFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
 
-    // Responde 401 e encerra ali: setComplete fecha a resposta sem chamar o servico.
+    // Responde 401 e encerra ali: setComplete fecha a resposta sem chamar o
+    // servico.
     private Mono<Void> recusar(ServerWebExchange exchange) {
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();
