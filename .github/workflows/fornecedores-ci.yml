@@ -1,0 +1,25 @@
+name: CI - Fornecedores Service
+
+on:
+  push:
+    branches:
+      - atividade-leilaHortencio
+
+jobs:
+  build-fornecedores:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Compilar fornecedores-service
+        working-directory: fornecedores-service
+        run: mvn clean compile

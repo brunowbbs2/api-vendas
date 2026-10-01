@@ -1,0 +1,138 @@
+services:
+
+  # --- Service Discovery ---
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservicos-net
+
+  # --- Config Server ---
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/config-repo
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: file:///config-repo
+    networks:
+      - microservicos-net
+
+  # --- Produtos ---
+  produtos-service:
+    build: ./produtos-service
+    container_name: produtos-service
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      SPRING_APPLICATION_NAME: produtos-service
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_TOOL_OPTIONS: >-
+        -Deureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+    ports:
+      - "8081:8081"
+    networks:
+      - microservicos-net
+
+  # --- Vendas ---
+  vendas-service:
+    build: ./vendas-service
+    container_name: vendas-service
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      SPRING_APPLICATION_NAME: vendas-service
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_TOOL_OPTIONS: >-
+        -Deureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+    ports:
+      - "8082:8082"
+    networks:
+      - microservicos-net
+
+  # --- Clientes ---
+  clientes-service:
+    build: ./clientes-service
+    container_name: clientes-service
+
+    depends_on:
+      - eureka-server
+      - config-server
+
+    environment:
+      SPRING_APPLICATION_NAME: clientes-service
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
+      SPRING_PROFILES_ACTIVE: docker
+
+      JAVA_TOOL_OPTIONS: >-
+        -Deureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+
+    ports:
+      - "8083:8083"
+
+    networks:
+      - microservicos-net
+
+  # --- Auth ---
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      SPRING_APPLICATION_NAME: auth-service
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_TOOL_OPTIONS: >-
+        -Deureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+    ports:
+      - "8084:8084"
+    networks:
+      - microservicos-net
+
+  # --- Gateway ---
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    ports:
+      - "8085:8085"
+    networks:
+      - microservicos-net
+
+  # --- Fornecedores ---
+  fornecedores-service:
+    build: ./fornecedores-service
+    container_name: fornecedores-service
+    depends_on:
+      - eureka-server
+      - config-server
+      - produtos-service
+    environment:
+      SPRING_APPLICATION_NAME: fornecedores-service
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_TOOL_OPTIONS: >-
+        -Deureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+    ports:
+      - "8086:8084"
+    networks:
+      - microservicos-net
+
+
+networks:
+  microservicos-net:
+    driver: bridge
