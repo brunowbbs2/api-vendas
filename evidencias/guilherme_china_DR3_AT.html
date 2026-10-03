@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>DR3 AT - Guilherme China</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #172033; font: 14px/1.45 Arial, sans-serif; background: #fff; }
+    .page { min-height: 267mm; page-break-after: always; position: relative; padding: 3mm; }
+    .page:last-child { page-break-after: auto; }
+    .cover { display: flex; min-height: 260mm; flex-direction: column; justify-content: center; text-align: center; }
+    h1 { margin: 0 0 12px; color: #173b72; font-size: 30px; }
+    h2 { margin: 0 0 8px; color: #173b72; font-size: 22px; border-bottom: 2px solid #d6e1f0; padding-bottom: 7px; }
+    h3 { margin: 10px 0 5px; color: #2a4d78; font-size: 15px; }
+    p { margin: 6px 0; }
+    a { color: #1558a6; overflow-wrap: anywhere; }
+    .meta { margin: 28px auto; width: 75%; padding: 20px; border: 1px solid #cbd5e1; border-radius: 8px; text-align: left; }
+    .instruction { padding: 10px 12px; background: #edf4fc; border-left: 4px solid #3478bd; border-radius: 4px; }
+    code { font: 12px Consolas, monospace; color: #1d3557; background: #eef2f7; padding: 1px 4px; border-radius: 3px; }
+    .evidence { position: relative; margin-top: 12px; height: 176mm; border: 2px dashed #8ca3bc; border-radius: 8px; background: #f8fafc; overflow: hidden; }
+    .evidence.small { height: 82mm; }
+    .evidence-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 25px; color: #68788c; text-align: center; font-size: 17px; }
+    .evidence img { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; object-fit: contain; background: white; }
+    .caption { color: #516072; font-size: 12px; margin-top: 5px; }
+    .checklist { margin: 20px auto; width: 80%; text-align: left; }
+    .footer { position: absolute; bottom: 0; width: 100%; color: #75849a; text-align: center; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <section class="page cover">
+    <h1>Desenvolvimento de Serviços Web e Testes com Java</h1>
+    <p><strong>DR3 — Assessment</strong></p>
+    <div class="meta">
+      <p><strong>Aluno:</strong> Guilherme de Morais China Costa</p>
+      <p><strong>Matrícula:</strong> 44671579804</p>
+      <p><strong>Branch:</strong> atividade-guilherme_china</p>
+      <p><strong>Repositório:</strong> <a href="https://github.com/guilhermec-costa/api-vendas-AT">github.com/guilhermec-costa/api-vendas-AT</a></p>
+    </div>
+    <p>Relatório de evidências dos exercícios 1 a 12</p>
+    <div class="footer">Guilherme de Morais China Costa — 44671579804</div>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 1 — produtos-service no Eureka</h2>
+    <p class="instruction">Abra <code>http://localhost:8761</code> com Eureka e produtos-service ativos. Capture a janela inteira, mantendo a URL visível e a linha <strong>PRODUTOS-SERVICE</strong> legível em <em>Instances currently registered with Eureka</em>.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 01<br>Painel do Eureka com PRODUTOS-SERVICE registrado</span><img src="prints/ex01-eureka-produtos.png" alt=""></div>
+    <p class="caption">Figura 1 — Registro do produtos-service no Eureka.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 2 — Branch e Pull Request</h2>
+    <p class="instruction">No GitHub, abra a aba <strong>Pull requests</strong> e entre no PR da branch <code>atividade-guilherme_china</code> para <code>main</code>. Capture o cabeçalho mostrando o estado <strong>Open</strong>, as duas branches e o título do PR.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 02<br>Pull Request aberto: atividade-guilherme_china → main</span><img src="prints/ex02-pull-request.png" alt=""></div>
+    <p class="caption">Figura 2 — Pull Request da atividade.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 3 — Inicialização na porta 8084</h2>
+    <p class="instruction">Execute <code>docker compose logs --tail=100 fornecedores-service</code>. Capture as linhas <code>Tomcat started on port 8084</code> e <code>Started FornecedoresServiceApplication</code>, incluindo o comando no terminal.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 03<br>Terminal com fornecedores-service iniciado na porta 8084</span><img src="prints/ex03-terminal-8084.png" alt=""></div>
+    <p class="caption">Figura 3 — Inicialização do novo microsserviço.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 4 — Cinco fornecedores no H2</h2>
+    <p class="instruction">Acesse <code>http://localhost:8084/h2-console</code>. Use JDBC URL <code>jdbc:h2:mem:fornecedoresdb</code>, usuário <code>sa</code> e senha vazia. Execute <code>SELECT * FROM FORNECEDOR;</code> e capture a consulta e exatamente os cinco registros iniciais.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 04<br>H2 Console com os cinco registros da tabela FORNECEDOR</span><img src="prints/ex04-h2-fornecedores.png" alt=""></div>
+    <p class="caption">Figura 4 — Dados carregados automaticamente no H2.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 5 — Endpoints GET e status 404</h2>
+    <p class="instruction">No Postman ou Insomnia, capture <code>GET http://localhost:8084/fornecedores</code> com status 200 e os registros. Depois capture <code>GET http://localhost:8084/fornecedores/999</code> com o status <strong>404 Not Found</strong> visível.</p>
+    <div class="evidence small"><span class="evidence-label">INSERIR PRINT 05A<br>GET /fornecedores — 200 OK</span><img src="prints/ex05a-get-todos.png" alt=""></div>
+    <div class="evidence small"><span class="evidence-label">INSERIR PRINT 05B<br>GET /fornecedores/999 — 404 Not Found</span><img src="prints/ex05b-get-404.png" alt=""></div>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 6 — fornecedores-service no Eureka</h2>
+    <p class="instruction">Atualize <code>http://localhost:8761</code>. Capture a janela inteira com a URL e a linha <strong>FORNECEDORES-SERVICE</strong> marcada como <strong>UP</strong>.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 06<br>Painel do Eureka com FORNECEDORES-SERVICE registrado</span><img src="prints/ex06-eureka-fornecedores.png" alt=""></div>
+    <p class="caption">Figura 6 — Registro do fornecedores-service no Eureka.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 7 — Configuração centralizada</h2>
+    <p class="instruction">Primeiro abra <code>http://localhost:8888/fornecedores-service/default</code> e capture a resposta contendo <code>server.port: 8084</code>, H2 e Eureka. Depois execute <code>docker compose logs --tail=100 fornecedores-service</code> e capture <code>Located environment</code> junto de <code>Tomcat started on port 8084</code>.</p>
+    <div class="evidence small"><span class="evidence-label">INSERIR PRINT 07A<br>Resposta do Config Server</span><img src="prints/ex07a-config-server.png" alt=""></div>
+    <div class="evidence small"><span class="evidence-label">INSERIR PRINT 07B<br>Serviço usando a porta recebida do Config Server</span><img src="prints/ex07b-config-porta.png" alt=""></div>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 8 — Acesso pelo Gateway</h2>
+    <p class="instruction">Abra <code>http://localhost:8085/fornecedores-service/fornecedores</code>. Capture a janela inteira, deixando a porta <strong>8085</strong> visível na URL e a lista de fornecedores na resposta.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 08<br>Lista de fornecedores obtida pelo Gateway na porta 8085</span><img src="prints/ex08-gateway-get.png" alt=""></div>
+    <p class="caption">Figura 8 — Roteamento dinâmico pelo Spring Cloud Gateway.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 9 — Cadastro com POST</h2>
+    <p class="instruction">No Postman ou Insomnia, envie <code>POST http://localhost:8084/fornecedores</code> com JSON <code>{"nome":"Zeta Componentes","cnpj":"67.890.123/0001-45"}</code>. Capture requisição, status <strong>201 Created</strong> e o <code>id</code> devolvido. Se esse CNPJ já foi usado, reinicie o fornecedores-service ou altere apenas o CNPJ.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 09<br>POST /fornecedores — 201 Created e id gerado</span><img src="prints/ex09-post-201.png" alt=""></div>
+    <p class="caption">Figura 9 — Novo fornecedor persistido.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 10 — Consulta ao produtos-service com Feign</h2>
+    <p class="instruction">Com Eureka, produtos-service e fornecedores-service ativos, abra <code>http://localhost:8084/fornecedores/produtos</code>. Capture a URL e a lista de produtos devolvida pelo fornecedores-service.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 10<br>Produtos obtidos por OpenFeign</span><img src="prints/ex10-feign-produtos.png" alt=""></div>
+    <p class="caption">Figura 10 — Comunicação entre microsserviços via OpenFeign e Eureka.</p>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 11 — Docker Compose e Gateway</h2>
+    <p class="instruction">Execute <code>docker compose up -d --build</code> e, quando concluir, <code>docker compose ps</code>. Capture todos os containers com status <strong>Up</strong>. Em seguida capture novamente a resposta em <code>http://localhost:8085/fornecedores-service/fornecedores</code>.</p>
+    <div class="evidence small"><span class="evidence-label">INSERIR PRINT 11A<br>Todos os containers em execução</span><img src="prints/ex11a-containers.png" alt=""></div>
+    <div class="evidence small"><span class="evidence-label">INSERIR PRINT 11B<br>Resposta integrada pelo Gateway</span><img src="prints/ex11b-gateway-docker.png" alt=""></div>
+  </section>
+
+  <section class="page">
+    <h2>Exercício 12 — GitHub Actions</h2>
+    <p class="instruction">Depois do push, abra a aba <strong>Actions</strong> do repositório, selecione o workflow <strong>Compilar fornecedores-service</strong> e abra a execução mais recente. Capture o nome do workflow, o commit/branch e o job <strong>build</strong> concluído com check verde.</p>
+    <div class="evidence"><span class="evidence-label">INSERIR PRINT 12<br>Pipeline concluído com check verde</span><img src="prints/ex12-actions.png" alt=""></div>
+    <p class="caption">Figura 12 — Compilação Maven automatizada com Java 17.</p>
+  </section>
+</body>
+</html>
